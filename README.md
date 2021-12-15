@@ -269,6 +269,7 @@ Windows 機器學習的程式碼產生器 mlgen 會建立 c #、c + +/WinRT 和 
 ### 載入模型
 1. 按兩下程式碼檔案 MainPage.xaml.cs 以開啟應用程式程式碼。
 2. 將 "using" 語句取代為下列各項，以取得您需要的所有 Api 的存取權。
+
 '''
 // Specify all the using statements which give us the access to all the APIs that you'll need
 using System;
@@ -320,6 +321,7 @@ namespace ImageClassifierAppUWP
         private string result = "";
         private float resultProbability = 0;
 '''
+
 現在，您將會執行 LoadModel 方法。 方法會存取 ONNX 模型，並將它儲存在記憶體中。 然後，您將使用方法，將模型具現 CreateFromStreamAsync 化為 LearningModel 物件。 LearningModel類別代表已定型的機器學習模型。 一旦具現化後， LearningModel 就是您用來與 Windows ML 互動的初始物件。
 
 若要載入模型，您可以使用類別中的數個靜態方法 LearningModel 。 在此情況下，您將會使用 CreateFromStreamAsync 方法。
@@ -328,6 +330,7 @@ CreateFromStreamAsync方法是使用 mlgen 自動建立的，因此您不需要�
 
 若要深入瞭解 LearningModel 類別，請參閱 LearningModel。 若要深入瞭解載入模型的其他方式，請參閱 載入模型檔
 4. 將 loadModel 方法加入至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
+
 '''
 private async Task loadModel()
         {
@@ -337,7 +340,9 @@ private async Task loadModel()
             modelGen = await classifierModel.CreateFromStreamAsync(modelFile);
         }
 '''
+
 5. 現在，將新方法的呼叫加入至類別的函式。
+
 '''
 // The main page to initialize and execute the model.
         public MainPage()
@@ -364,8 +369,10 @@ private async Task loadModel()
             modelGen = await classifierModel.CreateFromStreamAsync(modelFile);
         }
 '''
+
 ### 載入映射
 1. 我們必須定義 click 事件，才能起始模型執行的四個方法呼叫的序列–轉換、系結和評估、輸出解壓縮，以及顯示結果。 將下列方法新增至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
+
 '''
 // Waiting for a click event to select a file 
         private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
@@ -385,7 +392,9 @@ private async Task loadModel()
             await displayResult();
         }
 '''
+
 2. 現在，您將會執行 getImage() 方法。 這個方法會選取輸入影像檔案，並將它儲存在記憶體中。 將下列方法新增至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
+
 '''
 // A method to select an input image file
         private async Task<bool> getImage()
@@ -415,6 +424,7 @@ private async Task loadModel()
 現在，您將會實作為 Bind() 點陣圖 BGRA8 格式取得檔案標記法的影像方法。
   
 3. 將方法的實作為 convert()MainPage.xaml.cs MainPage 類別內的程式碼檔案。 Convert 方法會以 BGRA8 格式取得輸入檔的標記法。
+
 '''
 // A method to convert and bind the input image.  
         private async Task imageBind()
@@ -446,7 +456,9 @@ private async Task loadModel()
             }
         }
 '''
+
 在本節中完成的工作結果將如下所示。
+
 '''
 // Waiting for a click event to select a file 
         private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
@@ -542,4 +554,127 @@ Mlgen 會自動產生系結的執行，因此您不需要加以處理。 系結�
 **注意: 若要深入瞭解如何系結 LearningModel 和 WinML 所支援的功能類型，請參閱系結 LearningModel 檔。**
   
 ### 評估模型：
-  
+在您建立會話來系結模型並將值系結至模型的輸入和輸出之後，您可以評估模型的輸入並取得其預測。 若要執行模型執行，您應該在 LearningModelSession 上呼叫任何預先定義的評估方法。 在我們的案例中，我們會使用 EvaluateAsync 方法。
+
+與相同 CreateFromStreamAsync ， EvaluateAsync 方法也會由 WinML 程式碼產生器自動產生，因此您不需要執行此方法。 您可以在檔案中檢查這個方法 classifier.cs 。
+
+EvaluateAsync方法會使用系結中已系結的功能值，以非同步方式評估機器學習模型。 它會使用類別來建立的會話、系結 LearningModelSession 輸入和輸出 LearningModelBinding 、執行模型評估，以及取得模型的輸出功能 LearningModelEvaluationResult 。
+
+**注意: 若要瞭解執行模型的其他評估方法，請查看 LearningModelSession 類別檔，以檢查哪些方法可以在 LearningModelSession 上執行。**
+1. 將下列方法新增至 MainPage.xaml.cs MainPage 類別內的程式碼檔案，以建立會話、系結和評估模型。
+
+'''// A method to evaluate the model
+        private async Task evaluate()
+        {
+            output = await modelGen.EvaluateAsync(input);
+        }
+'''
+
+## 解壓縮並顯示結果
+您現在需要將模型輸出解壓縮，並顯示正確的結果。 您將藉由執行和方法來執行此動作 extractResultdisplayResult 。
+
+如您先前所探討的，此模型會傳回兩個輸出：第一個名為 classLabel 字串的 tensor，而第二個名為遺失的是字串對浮點數對應的序列，可描述每個標示分類的機率。 因此，為了成功顯示結果和機率，我們只需要將輸出從遺失輸出中取出。 我們必須找出最高機率，才能傳回正確的結果。
+1. 將 extractResult 方法加入至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
+
+'''
+private void extractResult()
+        {
+        // A method to extract output (result and a probability) from the "loss" output of the model 
+            var collection = output.loss;
+            float maxProbability = 0;
+            string keyOfMax = "";
+
+            foreach (var dictionary in collection)
+            {
+                foreach (var key in dictionary.Keys)
+                {
+                    if (dictionary[key] > maxProbability)
+                    {
+                        maxProbability = dictionary[key];
+                        keyOfMax = key;
+                    }
+                }
+            }
+            result = keyOfMax;
+            resultProbability = maxProbability;
+        }
+'''
+
+2. 將 displayResult 方法加入至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
+
+'''
+// A method to display the results
+        private async Task displayResult()
+        {
+            displayOutput.Text = result.ToString();
+            displayProbability.Text = resultProbability.ToString();
+        }
+'''
+
+系結 和評估 的結果，以及顯示應用程式 WinML 程式碼的 結果 部分，如下所示。
+
+'''
+// A method to evaluate the model
+        private async Task evaluate()
+        {
+            output = await modelGen.EvaluateAsync(input);
+        }
+
+        // A method to extract output (string and a probability) from the "loss" output of the model 
+        private void extractResult()
+        {
+            var collection = output.loss;
+            float maxProbability = 0;
+            string keyOfMax = "";
+
+            foreach (var dictionary in collection)
+            {
+                foreach (var key in dictionary.Keys)
+                {
+                    if (dictionary[key] > maxProbability)
+                    {
+                        maxProbability = dictionary[key];
+                        keyOfMax = key;
+                    }
+                }
+            }
+            result = keyOfMax;
+            resultProbability = maxProbability;
+        }
+
+        // A method to display the results
+        private async Task displayResult()
+        {
+            displayOutput.Text = result.ToString();
+            displayProbability.Text = resultProbability.ToString();
+        }
+'''
+
+這樣就大功告成了！ 您已成功建立具有基本 GUI 的 Windows machine learning 應用程式，以測試我們的分類模型。 下一步是啟動應用程式，並在 Windows 裝置本機上執行。
+
+## 啟動應用程式
+當您完成應用程式介面、加入模型並產生 WinML 程式碼之後，就可以測試應用程式。 確定頂端工具列中的下拉式功能表設定為 Debug 。 Solution Platformx64 如果您的裝置是64位，請將變更為在本機電腦上執行專案，如果是32位則變更為 x86 。
+
+若要測試我們的應用程式，您將使用下列水果映射。 讓我們來看看應用程式如何分類影像的內容。
+
+![image](https://user-images.githubusercontent.com/59305013/146181985-18768060-f9d8-4bbb-bfe2-5b92b092c8c2.png)
+
+1. 將此影像儲存在本機裝置上以測試應用程式。 如有需要，請將影像格式變更為 jpg。 您也可以使用適當的格式 .jpg、.png、.bmp 或 .gif 格式，從本機裝置新增任何其他相關映射。
+2. 若要執行專案，請按 Start Debugging 工具列上的按鈕，或按下 F5 。
+3. 當應用程式啟動時，請按下 Pick Image 並從本機裝置選取影像。
+
+![image](https://user-images.githubusercontent.com/59305013/146182066-854b4f58-7f6a-41ab-88b0-0325390bdac8.png)
+
+結果會立即顯示在畫面上。 如您所見，我們的 WinML 應用程式已成功將影像分類為水果或蔬菜，並享有99.9% 的信賴評等。
+
+![image](https://user-images.githubusercontent.com/59305013/146182084-91df8cb1-11c3-47a2-bdda-40719fc3fcf5.png)
+
+## 總結
+您剛建立了第一個 Windows 機器學習應用程式，從建立模型到成功執行。
+
+## 其他資源
+若要深入了解此教學課程中提及的主題，請瀏覽下列資源:
+* Windows ML 工具： ML 儀表板、 WinMLRunner和mglen Windows ML 程式碼產生器等 Windows 工具。
+* ONNX 模型：深入瞭解 ONNX 格式。
+* Windows ML 效能和記憶體：深入瞭解如何使用 Windows ML 來管理應用程式效能。
+* Windows 機器學習 api 參考：深入瞭解 Windows ML api 的三個區域。
