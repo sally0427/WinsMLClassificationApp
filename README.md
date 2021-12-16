@@ -142,6 +142,8 @@
 
 **注意: 如果您想要下載完整的範例程式碼，您可以複製 方案檔。 複製儲存機制，流覽至此範例，然後 ImageClassifierAppUWP.sln 以 Visual Studio 開啟檔案。 然後，您可以跳到應用程式) 步驟中的 [啟動應用程式] (#Launch。**
 
+**注意: 若是直接launch github上的版本，好像無法更改成自己的model，無法自動生成CS檔(classifier.cs)，不知道為何**
+
 ## 建立 WinML UWP (c # )
 以下我們將示範如何從頭開始建立應用程式和 WinML 程式碼。 您將學習如何：
 * 載入機器學習模型。
@@ -167,6 +169,7 @@
 按下 create 以建立您的專案。 最小的 [目標版本] 視窗可能會出現。 請確定您的最小版本已設定為Windows 10 組建 17763或更新版本。
 
 若要建立應用程式並使用 WinML 應用程式部署模型，您需要下列各項：
+
 4. 建立專案之後，流覽至專案資料夾，開啟 [資產] 資料夾 [.. ..\ImageClassifierAppUWP\Assets]，並將您的模型複製到這個位置。
 5. 將模型名稱從變更 model.onnx 為 classifier.onnx 。 這可讓事情變得更清楚，並將其與教學課程的格式對齊。
 
@@ -330,6 +333,7 @@ namespace ImageClassifierAppUWP
 CreateFromStreamAsync方法是使用 mlgen 自動建立的，因此您不需要執行此方法。 您可以按兩下 [檔案產生的檔案（依 mlgen）] 來檢查此方法 classifier.cs 。
 
 若要深入瞭解 LearningModel 類別，請參閱 LearningModel。 若要深入瞭解載入模型的其他方式，請參閱 載入模型檔
+
 4. 將 loadModel 方法加入至 MainPage.xaml.cs 類別內的程式碼檔案 MainPage 。
 
 ```
