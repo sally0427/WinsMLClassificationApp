@@ -1,12 +1,12 @@
 # Windows classification App
 ## 官方引用網站
-[各project教學list](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/)
-[教學1](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-intro)
-[教學2](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-train-model)
-[教學3](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-deploy-model#launch-the-application)
-[Azure首頁](https://portal.azure.com/)
-[模型訓練網站](https://www.customvision.ai/)
-[資料集](https://www.kaggle.com/trolukovich/food11-image-dataset)
+* [各project教學list](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/)
+* [教學1](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-intro)
+* [教學2](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-train-model)
+* [教學3](https://docs.microsoft.com/zh-tw/windows/ai/windows-ml/tutorials/image-classification-deploy-model#launch-the-application)
+* [Azure首頁](https://portal.azure.com/)
+* [模型訓練網站](https://www.customvision.ai/)
+* [資料集](https://www.kaggle.com/trolukovich/food11-image-dataset)
 
 
 ## 建立自訂視覺資源和專案
