@@ -49,7 +49,8 @@
 * Domains: Food (compact).
 * Export Capabilities: Basic platforms (Tensorflow, CoreML, ONNX, ...)
 
-**(此點特別注意，我有做錯過)注意: 若要匯出為 ONNX 格式，請確定您選擇的是 Food (compact) 網域。 非 compact 網域無法匯出至 ONNX。**
+**(此點特別注意，我有做錯過)**
+**注意: 若要匯出為 ONNX 格式，請確定您選擇的是 Food (compact) 網域。 非 compact 網域無法匯出至 ONNX。**
 **重要: 如果您登入的帳戶與 Azure 帳戶相關聯，[資源群組] 下拉式清單會顯示所有的 Azure 資源群組，包括自訂視覺服務資源。 如果沒有可用的資源群組，請確認您已使用與登入 Azure 入口網站相同的帳戶登入 customvision.ai。**
 
 4. 填妥對話方塊之後，請選取 [] Create project 。
