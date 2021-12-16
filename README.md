@@ -47,7 +47,7 @@
 ![image](https://user-images.githubusercontent.com/59305013/146168887-105b1937-5ab2-4d95-941f-5f38226df62d.png)
 
 ### Upload 訓練資料集
-[資料集]
+
 [資料集](https://www.kaggle.com/trolukovich/food11-image-dataset)
 現在您已建立專案，您將會從 Kaggle 開啟的資料集上傳先前備妥的食物影像資料集。
 1. 選取您的 FoodClassification 專案，以開啟自訂視覺網站的 web 介面。
