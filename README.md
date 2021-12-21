@@ -302,10 +302,11 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 ```
 3. 在命名空間底下的類別內使用語句之後，新增下列變數宣告 MainPageImageClassifierAppUWP 。
+**官網教學有寫錯程式碼請改成classifierInput()**
 ```
 // All the required variable declaration
         private classifierModel modelGen;
-        private classifierInput input = new classifierModelInput();
+        private classifierInput input = new classifierInput();
         private classifierOutput output;
         private StorageFile selectedStorageFile;
         private string result = "";
